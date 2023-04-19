@@ -12,11 +12,104 @@ header h1 {
   font-weight: 100;
 }
 
-input {
+.inputTodo {
   font-size: 20px;
   border: none;
   border-bottom: 2px solid #eee;
   outline: none;
-  width: 100%;
+  width: 80%;
   padding: 5px;
+}
+
+ul {
+  padding: 5px;
+}
+
+.task {
+  background-color: #3d4247;
+  padding: 15px;
+  margin: 15px;
+  overflow-x: hidden;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.task span {
+  color: #FFFFFF;
+}
+
+.icon {
+  float: right;
+  /* margin-right: 10px; */
+  margin: 0px 10px;
+  /* padding-right: 10px; */
+}
+
+article {
+  display: grid;
+}
+
+.edit-todo {
+  width: 80%;
+  font-size: 16px;
+  color: #FFFFFF;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid #FFFFFF;
+}
+
+.checkBox {
+  margin-right: 15px;
+}
+
+.button {
+  margin: 0 10px;
+  padding: 10px;
+  font-size: 14px;
+  color: #6c6777;
+  background-color: #fff;
+  border: none;
+  cursor: pointer;
+  width: 100px;
+  border-radius: 5px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+
+}
+
+.inputButton {
+  margin: 0 10px;
+  padding: 10px;
+  font-size: 14px;
+  color: #fafafa;
+  background-color: #353232;
+  border: none;
+  cursor: pointer;
+  width: 100px;
+  border-radius: 5px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.All {
+  color: #FFF;
+  background-color: #232225;
+}
+
+.Active {
+  color: #FFF;
+  background-color: #4ca84c;
+}
+
+.Done {
+  color: #000000;
+  background-color: #f2ba00;
+}
+
+.button.clear {
+  float: right;
+  color: #FFF;
+  background-color: #ee1630;
+  width: 130px;
+
 }

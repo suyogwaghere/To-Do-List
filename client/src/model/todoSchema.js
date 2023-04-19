@@ -7,11 +7,10 @@ const ToDoSchema = new mongoose.Schema({
   },
   done: {
     type: Boolean,
-    required: true,
+    default: false,
   },
   createdAt: {
     type: Date,
-    required: true,
     default: Date.now,
   },
 });
