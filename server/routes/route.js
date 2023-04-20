@@ -10,6 +10,9 @@ import {
 
 const route = express.Router();
 
+route.get("/", (request, response) => {
+  response.send("API Started");
+});
 route.post("/todos", addTodo);
 route.get("/todos", getAllTodos);
 route.get("/todos/:id", toggleTodoDone);

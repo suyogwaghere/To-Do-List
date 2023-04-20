@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 
-import { deleteTodo, getAllTodos } from '../redux/actions/index';
+import { getAllTodos } from '../redux/actions/index';
+// import { deleteTodo } from '../redux/actions/index';
 import { ALL_TODOS, DONE_TODOS, ACTIVE_TODOS } from '../redux/actions/type';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,7 +21,8 @@ export const Todos = () => {
 
     useEffect(() => {
         dispatch(getAllTodos());
-    }, [])
+    })
+    // ,[] removed 
 
     const getTodos = () => {
         if (currentTab === ALL_TODOS) {
@@ -32,13 +34,13 @@ export const Todos = () => {
         }
     }
 
-    const removeDoneTodos = () => {
-        todos.forEach(({ done, _id }) => {
-            if (done) {
-                dispatch(deleteTodo(_id));
-            }
-        })
-    }
+    // const removeDoneTodos = () => {
+    //     todos.forEach(({ done, _id }) => {
+    //         if (done) {
+    //             dispatch(deleteTodo(_id));
+    //         }
+    //     })
+    // }
 
     return (
         <article>
