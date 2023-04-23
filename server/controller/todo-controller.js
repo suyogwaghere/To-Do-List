@@ -25,6 +25,18 @@ export const getAllTodos = async (request, response) => {
   }
 };
 
+export const searchTodos = async (request, response) => {
+  try {
+    const regex = new RegExp(request.params.data, "i");
+    Todo.find({ data: regex }).then((result) => {
+      console.log(result);
+      return response.status(200).json(result);
+    });
+  } catch (error) {
+    return response.status(500).json(error.message);
+  }
+};
+
 export const toggleTodoDone = async (request, response) => {
   try {
     const todoRef = await Todo.findById(request.params.id);

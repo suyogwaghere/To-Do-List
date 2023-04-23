@@ -6,6 +6,8 @@ export const todosReducers = (state = [], action) => {
       return [action.payload, ...state];
     case actionTypes.GETALL_TODO:
       return action.payload;
+    case actionTypes.SEARCH_TODO:
+      return action.payload.data;
     case actionTypes.TOGGLE_TODO:
       return state.map((todo) =>
         todo._id === action.payload._id ? { ...todo, done: !todo.done } : todo

@@ -1,8 +1,10 @@
 import { useEffect } from 'react';
-
+import BookData from "../Data.json";
 import { getAllTodos } from '../redux/actions/index';
-// import { deleteTodo } from '../redux/actions/index';
+import { deleteTodo } from '../redux/actions/index';
+import { searchTodos } from '../redux/actions/index';
 import { ALL_TODOS, DONE_TODOS, ACTIVE_TODOS } from '../redux/actions/type';
+import SearchBar from "../components/searchbar";
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -18,11 +20,10 @@ export const Todos = () => {
 
     const todos = useSelector(state => state.todos);
     const currentTab = useSelector(state => state.currentTab);
-
+      
     useEffect(() => {
         dispatch(getAllTodos());
-    })
-    // ,[] removed 
+    },[])
 
     const getTodos = () => {
         if (currentTab === ALL_TODOS) {
@@ -34,20 +35,42 @@ export const Todos = () => {
         }
     }
 
-    // const removeDoneTodos = () => {
-    //     todos.forEach(({ done, _id }) => {
-    //         if (done) {
-    //             dispatch(deleteTodo(_id));
-    //         }
-    //     })
-    // }
+    const searchTodos = (data) => {
+        return data;
+    }
+
+    const removeDoneTodos = () => {
+        todos.forEach(({ done, _id }) => {
+            if (done) {
+                dispatch(deleteTodo(_id));
+            }
+        })
+    }
 
     return (
         <article>
+            {
+                // searchTodos().map(todo => (todo = <SearchBar 
+                //     todo={todo}
+                //     placeholder="Enter a Book Name..."
+                //     data={BookData}
+                // />
+                // ))
+            
+            
+            }{
+                <SearchBar 
+                    // todo={todo}
+                    placeholder="Enter a Book Name..."
+                    data={todos}
+                />
+                
+                    }
+              
             <div>
                 <Tabs currentTab={currentTab} />
 
-                {/* {
+                {
                     // todos.some(todo => todo.done) 
                     (currentTab===DONE_TODOS) ? (
                         <button
@@ -55,8 +78,9 @@ export const Todos = () => {
                             className="button clear"
                         >Remove Todos</button>
                     ) : null    
-                } */}
+                }
             </div>
+            
             <div>
                 <ul>   
                 {

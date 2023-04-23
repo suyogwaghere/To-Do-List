@@ -9,6 +9,8 @@ const Todo = ({ todo }) => {
 
     const [editing, setEditing] = useState(false);
     const [text, setText] = useState(todo?.data);
+    
+    // console.log(text);
 
     const dispatch = useDispatch();
 
@@ -21,7 +23,6 @@ const Todo = ({ todo }) => {
     }
 
     return (
-        
         <li
             className="task"
             style={{
