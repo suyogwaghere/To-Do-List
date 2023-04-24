@@ -1,54 +1,32 @@
 import React, { useState } from "react";
 import "./SearchBar.css";
 
-import SearchIcon from '@mui/icons-material/Search';
-import CloseIcon from '@mui/icons-material/Close';
+import SearchIcon from "@mui/icons-material/Search";
+import CloseIcon from "@mui/icons-material/Close";
 
-import { useDispatch , useSelector} from 'react-redux';
-import { useEffect } from 'react';
-import { searchTodos } from '../redux/actions/index';
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { searchTodos } from "../redux/actions/index";
+import useDebounce from "./useDebaunce";
 
-
-function SearchBar({ placeholder, dataset}) {
-
+function SearchBar({ placeholder, dataset }) {
   const dispatch = useDispatch();
-
-  const todos = useSelector(state => state.todos);
-  
-    const [filteredData, setFilteredData] = useState([]);
+  const newFilter = useSelector((state) => state.searchWord).map(
+    ({ data }) => data
+  );
   const [wordEntered, setWordEntered] = useState("");
-  const [wordSearched, setWordSearched] = useState("");
-  
-
+  const searchValue = useDebounce(wordEntered, 1000);
 
   useEffect(() => {
-    dispatch(searchTodos(wordEntered));
-    setFilteredData(todos.data);
-    console.log("use effects");
-    console.log(todos);
-    }, [])
-    
-  const handleFilter = (event) => {
-    const searchWord = event.target.value;
-    
-    dispatch(searchTodos(searchWord));
-    console.log("call api");
-      console.log({dataset});
-      
-    setWordEntered(searchWord);
-    const newFilter = dataset.filter((dataTod) => {
-      return "todo.data.includes(searchWord)";
-    });
-
-    if (searchWord === "") {
-      setFilteredData([]);
-    } else {
-      setFilteredData(newFilter);
+    async function fetchData() {
+      setWordEntered(searchValue);
+      console.log(searchValue);
+      dispatch(searchTodos(searchValue));
     }
-  };
+    if (searchValue) fetchData();
+  }, [searchValue, dispatch]);
 
   const clearInput = () => {
-    setFilteredData([]);
     setWordEntered("");
   };
 
@@ -59,27 +37,28 @@ function SearchBar({ placeholder, dataset}) {
           type="text"
           placeholder={placeholder}
           value={wordEntered}
-          onChange={handleFilter}
+          onChange={(e) => setWordEntered(e.target.value)}
         />
         <div className="searchIcon">
-          {filteredData.length === 0 ? (
+          {newFilter.length === 0 ? (
             <SearchIcon />
           ) : (
             <CloseIcon id="clearBtn" onClick={clearInput} />
           )}
         </div>
       </div>
-      {/* {filteredData.length != 0 && (
-        <div className="dataResult">
-          {filteredData.slice(0, 15).map((value, key) => {
+      {wordEntered === "" ? " " : ""}
+      <div className="dataResult" hidden={wordEntered === "" ? "hidden" : ""}>
+        <ul>
+          {newFilter.map((item) => {
             return (
-              // <a className="dataItem" href={value.link} target="_blank">
-                <p>{value.data} </p>
-              // </a>
+              <li className="dataItem">
+                <p>{item}</p>
+              </li>
             );
           })}
-        </div>
-      )} */}
+        </ul>
+      </div>
     </div>
   );
 }

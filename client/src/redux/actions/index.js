@@ -35,7 +35,7 @@ export const searchTodos = (data) => async (dispatch) => {
     const res = await axios.get(`${API_URL}/todo/${data}`);
     dispatch({ type: SEARCH_TODO, payload: res.data });
   } catch (error) {
-    console.log("Error while calling getAllTodos API ", error.message);
+    console.log("Error while calling searchTodos API ", error.message);
   }
 };
 
@@ -44,7 +44,7 @@ export const toggleTodo = (id) => async (dispatch) => {
     const res = await axios.get(`${API_URL}/todos/${id}`);
     dispatch({ type: TOGGLE_TODO, payload: res.data });
   } catch (error) {
-    console.log("Error while calling getAllTodos API ", error.message);
+    console.log("Error while calling toggleTodo API ", error.message);
   }
 };
 
