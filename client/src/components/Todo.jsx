@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { toggleTodo, updateTodo } from "../redux/actions";
+import { toggleChecked, toggleTodo, updateTodo } from "../redux/actions";
 import { deleteTodo } from "../redux/actions";
 
 import { useDispatch } from "react-redux";
@@ -11,14 +11,6 @@ const Todo = ({ todo, checked }) => {
 
   const dispatch = useDispatch();
 
-  // const onFormSubmit = (e) => {
-  //   e.preventDefault();
-
-  //   setEditing((prevState) => !prevState);
-
-  //   dispatch(updateTodo(todo._id, text));
-  // };
-
   const editForm = () => {
     setEditing(true);
   };
@@ -27,8 +19,13 @@ const Todo = ({ todo, checked }) => {
     setEditing(false);
     dispatch(updateTodo(todo._id, text));
   };
+
   const handleChange = () => {
     dispatch(toggleTodo(todo._id));
+  };
+
+  const handleChecked = () => {
+    dispatch(toggleChecked(todo._id));
   };
 
   return (
@@ -38,13 +35,9 @@ const Todo = ({ todo, checked }) => {
         type="checkbox"
         name="listCheckbox"
         className="checkBox"
-        // onChange={() => toggleCheck()}
-        // checked={checked["nr1"]}
-        // onClick={() => dispatch(toggleTodo(todo._id))}
-        // onClick={handleChange}
-        // defaultChecked={false}
-        // checked={todo?.done ? true : ""}
-        // checked={isSubscribed}
+        // onChange={() => handleChecked()}
+        checked={todo.isChecked}
+        onClick={handleChecked}
       />
       <li
         className="task"

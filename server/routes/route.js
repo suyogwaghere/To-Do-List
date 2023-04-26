@@ -4,6 +4,7 @@ import {
   addTodo,
   getAllTodos,
   toggleTodoDone,
+  toggleTodoChecked,
   updateTodo,
   deleteTodo,
   searchTodos,
@@ -18,6 +19,7 @@ route.post("/todos", addTodo);
 route.get("/todos", getAllTodos);
 route.get("/todo/:data", searchTodos);
 route.get("/todos/:id", toggleTodoDone);
+route.get("/todos/:id", toggleTodoChecked);
 route.put("/todos/:id", updateTodo);
 route.delete("/todos/:id", deleteTodo);
 

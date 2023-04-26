@@ -5,6 +5,7 @@ import {
   GETALL_TODO,
   SEARCH_TODO,
   TOGGLE_TODO,
+  TOGGLE_CHECKED,
   UPDATE_TODO,
   DELETE_TODO,
   TOGGLE_TAB,
@@ -45,6 +46,14 @@ export const toggleTodo = (id) => async (dispatch) => {
     dispatch({ type: TOGGLE_TODO, payload: res.data });
   } catch (error) {
     console.log("Error while calling toggleTodo API ", error.message);
+  }
+};
+export const toggleChecked = (id) => async (dispatch) => {
+  try {
+    const res = await axios.get(`${API_URL}/todos/${id}`);
+    dispatch({ type: TOGGLE_CHECKED, payload: res.data });
+  } catch (error) {
+    console.log("Error while calling toggleChecked API ", error.message);
   }
 };
 
