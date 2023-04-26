@@ -25,6 +25,32 @@ ul {
   padding: 5px;
 }
 
+.listHeader {
+  display: inline-flex;
+}
+
+.taskHeader {
+  display: flex;
+  width: auto;
+  color: #fff;
+  background-color: #919191;
+  padding: 4px;
+  margin: -4px;
+  overflow-x: hidden;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.listItems {
+  display: flex;
+}
+
+.taskDetailsHeading {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 260px;
+}
+
 .task {
   background-color: #3d4247;
   padding: 15px;
@@ -36,6 +62,14 @@ ul {
 
 .task span {
   color: #FFFFFF;
+}
+
+.taskDetails {
+  color: #fff;
+  display: inline-flex;
+  text-align: start;
+  width: 80%;
+  cursor: pointer;
 }
 
 .icon {
@@ -112,4 +146,8 @@ article {
   background-color: #ee1630;
   width: 130px;
 
+}
+
+li.task {
+  width: 100%;
 }

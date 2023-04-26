@@ -5,68 +5,102 @@ import { deleteTodo } from "../redux/actions";
 
 import { useDispatch } from "react-redux";
 
-const Todo = ({ todo }) => {
+const Todo = ({ todo, checked }) => {
   const [editing, setEditing] = useState(false);
   const [text, setText] = useState(todo?.data);
 
   const dispatch = useDispatch();
 
-  const onFormSubmit = (e) => {
-    e.preventDefault();
+  // const onFormSubmit = (e) => {
+  //   e.preventDefault();
 
-    setEditing((prevState) => !prevState);
+  //   setEditing((prevState) => !prevState);
 
+  //   dispatch(updateTodo(todo._id, text));
+  // };
+
+  const editForm = () => {
+    setEditing(true);
+  };
+
+  const submitForm = (e) => {
+    setEditing(false);
     dispatch(updateTodo(todo._id, text));
   };
-  const handleChange = (event) => {
+  const handleChange = () => {
     dispatch(toggleTodo(todo._id));
   };
 
   return (
-    <li
-      className="task"
-      key={todo._id}
-      style={{
-        textDecoration: todo?.done ? "line-through" : "",
-        color: todo?.done ? "#bdc3c7" : "#34495e",
-        // backgroundColor: todo?.done ? '#f2ba00' : ' ',
-      }}
-      data-testid="todo-test"
-    >
+    // <div className="listComponent">
+    <div className="listItems">
       <input
         type="checkbox"
-        name="myCheckbox"
+        name="listCheckbox"
         className="checkBox"
+        // onChange={() => toggleCheck()}
+        // checked={checked["nr1"]}
         // onClick={() => dispatch(toggleTodo(todo._id))}
-        onClick={handleChange}
-        defaultChecked={false}
+        // onClick={handleChange}
+        // defaultChecked={false}
         // checked={todo?.done ? true : ""}
         // checked={isSubscribed}
       />
-      <span style={{ display: editing ? "none" : "" }}>{todo?.data}</span>
-
-      <form
-        style={{ display: editing ? "inline" : "none" }}
-        onSubmit={onFormSubmit}
+      <li
+        className="task"
+        key={todo._id}
+        style={{
+          // textDecoration: todo?.done ? "" : "line-through ",
+          // color: todo?.done ? "#bdc3c7" : "#34495e",
+          backgroundColor: todo?.done ? "#f2ba00" : " ",
+        }}
+        data-testid="todo-test"
       >
-        <input
-          type="text"
-          value={text}
-          className="edit-todo"
-          onChange={(e) => setText(e.target.value)}
-        />
-      </form>
+        <span
+          className="taskDetails"
+          style={{
+            display: editing === true ? "none" : "",
+            textDecoration: todo?.done ? "line-through" : "",
+          }}
+        >
+          {todo?.data}
+        </span>
 
-      <span className="icon" onClick={() => dispatch(deleteTodo(todo._id))}>
-        <i className="fas fa-trash" />
-      </span>
-      <span
-        className="icon"
-        onClick={() => setEditing((prevState) => !prevState)}
-      >
-        <i className="fas fa-pen" />
-      </span>
-    </li>
+        <form
+          style={{ display: editing === true ? "inline" : "none" }}
+          onSubmit={submitForm}
+        >
+          <input
+            type="text"
+            value={text}
+            className="edit-todo"
+            onChange={(e) => setText(e.target.value)}
+          />
+        </form>
+        <span className="icon" onClick={handleChange}>
+          <i className="fa fa-check-circle"></i>
+        </span>
+
+        <span className="icon" onClick={() => dispatch(deleteTodo(todo._id))}>
+          <i className="fas fa-trash" />
+        </span>
+
+        {editing === false ? (
+          <span
+            className="icon"
+            onClick={editForm}
+            // onClick={() => setEditing((prevState) => !prevState)}
+          >
+            <i className="fas  fa-pen" />
+          </span>
+        ) : (
+          <span className="icon" onClick={submitForm}>
+            <i className="fas fa-check-square"></i>
+          </span>
+        )}
+      </li>
+    </div>
+    // </div>
   );
 };
 

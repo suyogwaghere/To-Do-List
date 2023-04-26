@@ -40,7 +40,7 @@ function SearchBar({ placeholder, dataset }) {
           onChange={(e) => setWordEntered(e.target.value)}
         />
         <div className="searchIcon">
-          {newFilter.length === 0 ? (
+          {wordEntered.length === 0 ? (
             <SearchIcon />
           ) : (
             <CloseIcon id="clearBtn" onClick={clearInput} />
