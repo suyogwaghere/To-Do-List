@@ -53,23 +53,6 @@ export const toggleTodoDone = async (request, response) => {
   }
 };
 
-export const toggleTodoChecked = async (request, response) => {
-  try {
-    const todoRef = await Todo.findById(request.params.id);
-
-    const todo = await Todo.findOneAndUpdate(
-      { _id: request.params.id },
-      { isChecked: !todoRef.isChecked }
-    );
-
-    await todo.save();
-
-    return response.status(200).json(todo);
-  } catch (error) {
-    return response.status(500).json(error.message);
-  }
-};
-
 export const updateTodo = async (request, response) => {
   try {
     await Todo.findOneAndUpdate(

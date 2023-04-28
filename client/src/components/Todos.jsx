@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+/* eslint-disable no-lone-blocks */
+import { useEffect, useState } from "react";
 // import React, { useState } from "react";
 // import BookData from "../Data.json";
 // import { getAllTodos } from "../redux/actions/index";
@@ -14,13 +15,31 @@ import Tabs from "./Tabs";
 export const Todos = () => {
   const dispatch = useDispatch();
   //
+  const [selectedTodos, setSelectedTodos] = useState([]);
+  const [isAllChecked, setIsAllChecked] = useState(false);
   const todos = useSelector((state) => state.todos);
   const currentTab = useSelector((state) => state.currentTab);
+
+  const handleSetSelecTodo = (selecteData) => {
+    setSelectedTodos(selecteData);
+  };
 
   useEffect(() => {
     // dispatch(getAllTodos());
   }, [dispatch]);
 
+  console.log("selectedTodos", selectedTodos);
+
+  useEffect(() => {
+    // dispatch(getAllTodos());
+    const newArr1 = todos.map((v) => ({ ...v, isSelected: false }));
+    setSelectedTodos(newArr1);
+  }, [todos]);
+
+  // console.log(
+  //   "New array: ",
+  //   selectedTodos.map(({ isSelected }) => isSelected)
+  // );
   // const getTodos = () => {
   //   if (currentTab === ALL_TODOS) {
   //     return todos;
@@ -32,19 +51,40 @@ export const Todos = () => {
   // };
 
   const toggle = () => {
-    var checkboxes = document.getElementsByName("listCheckbox");
-    for (var i = 0; i < checkboxes.length; i++) {
-      if ((checkboxes[i].checked = false)) {
-        checkboxes[i].checked = true;
-      } else {
-        checkboxes[i].checked = false;
-      }
-    }
+    setIsAllChecked(!isAllChecked);
+    const allSelectedTodos = selectedTodos.map((v) => ({
+      ...v,
+      isSelected: !isAllChecked,
+    }));
+    setSelectedTodos(allSelectedTodos);
+    // var checkboxes = document.getElementsByName("listCheckbox");
+    // var checkBox = document.getElementById("selectAll");
+    // switch (checkBox.checked) {
+    //   case true:
+    //     {
+    //       for (var i = 0; i < checkboxes.length; i++) {
+    //         checkboxes[i].checked = true;
+    //       }
+    //     }
+    //     break;
+    //   case false:
+    //     {
+    //       for (var j = 0; j < checkboxes.length; j++) {
+    //         checkboxes[j].checked = false;
+    //       }
+    //     }
+    //     break;
+    //   default:
+    //     {
+    //       console.log("Invalid input type");
+    //     }
+    //     break;
+    // }
   };
 
   const removeCheckedTodos = () => {
-    todos.forEach(({ isChecked, _id }) => {
-      if (isChecked) {
+    selectedTodos.forEach(({ isSelected, _id }) => {
+      if (isSelected) {
         dispatch(deleteTodo(_id));
       }
     });
@@ -61,13 +101,13 @@ export const Todos = () => {
     <article>
       <div>
         <Tabs currentTab={currentTab} />
-        {todos.some((todo) => todo.isChecked) === true ? (
+
+        {selectedTodos.some(({ isSelected }) => isSelected) === false ? (
           <button onClick={removeCheckedTodos} className="button clear">
             Remove Todos
           </button>
         ) : null}
       </div>
-
       <div>
         <ul>
           <div className="taskHeader">
@@ -76,41 +116,20 @@ export const Todos = () => {
               type="checkbox"
               name="myCheckbox"
               className="checkBox"
-              // checked={false}
-              onClick={toggle}
-              // defaultChecked={false}
+              checked={isAllChecked}
+              onChange={toggle}
+              defaultChecked={false}
               // onChange={(event) => selectAll(event.target.checked)}
             />
-            <li className="listHeader">
-              <span
-                className="taskDetailsHeading"
-                // style={{
-                //   display: editing === true ? "none" : "",
-                //   textDecoration: todo?.done ? "line-through" : "",
-                // }}
-              >
-                ToDos
-              </span>
-              {/* <span
-                className="icon"
-                // onClick={handleChange}
-              >
-                <i className="fa fa-check-circle"></i>
-              </span> */}
-              {/* <span
-                className="icon"
-                onClick={""}
-                // onClick={() => dispatch(deleteTodo(todo._id))}
-              >
-                <i className="fas fa-trash" />
-              </span> */}
+            <li className="listHeader" key={selectedTodos}>
+              <span className="taskDetailsHeading">ToDos</span>
             </li>
           </div>
-          {<SearchBar placeholder="Enter a Task Name..." />}
-          {/* {console.log(getTodos())} */}
-          {/* {getTodos().map((todo) => (
-            <Todo key={todo._id} todo={todo} />
-          ))} */}
+          <SearchBar
+            placeholder="Enter a Task Name..."
+            selectedTodos={selectedTodos}
+            handleSetSelecTodo={handleSetSelecTodo}
+          />
         </ul>
       </div>
     </article>

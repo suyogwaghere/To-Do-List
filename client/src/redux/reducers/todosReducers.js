@@ -11,13 +11,6 @@ export const todosReducers = (state = [], action) => {
       return state.map((todo) =>
         todo._id === action.payload._id ? { ...todo, done: !todo.done } : todo
       );
-    case actionTypes.TOGGLE_CHECKED:
-      
-      return state.map((todo) =>
-        todo._id === action.payload._id
-          ? { ...todo, isChecked: !todo.isChecked }
-          : todo
-      );
     case actionTypes.UPDATE_TODO:
       return state.map((todo) =>
         todo._id === action.payload._id

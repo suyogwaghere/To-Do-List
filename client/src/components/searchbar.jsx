@@ -15,24 +15,26 @@ import useDebounce from "./useDebaunce";
 
 import Todo from "./Todo";
 // import Tabs from "./Tabs";
-function SearchBar({ placeholder }) {
+function SearchBar({ placeholder, selectedTodos, handleSetSelecTodo }) {
+  console.log("handleSetSelecTodo1", handleSetSelecTodo);
   const dispatch = useDispatch();
-  const newFilter = useSelector((state) => state.searchWord);
   //   .map(
   //   ({ data }) => data
   // );
-  const todos = useSelector((state) => state.todos);
-  const currentTab = useSelector((state) => state.currentTab);
-
+  // const [selectedTodos, setSelectedTodos] = useState([]);
   const [wordEntered, setWordEntered] = useState("");
+  const [filteredTodos, setFilteredTodos] = useState([]);
+  const [allTodos, setAllTodos] = useState([]);
+
+  // const todos = useSelector((state) => state.todos);
+  const currentTab = useSelector((state) => state.currentTab);
   const searchValue = useDebounce(wordEntered, 1000);
-  // console.log(newFilter);
+  const newFilter = useSelector((state) => state.searchWord);
 
   useEffect(() => {
     dispatch(getAllTodos());
     async function fetchData() {
       setWordEntered(searchValue);
-
       dispatch(searchTodos(searchValue));
     }
     if (searchValue) fetchData();
@@ -41,7 +43,6 @@ function SearchBar({ placeholder }) {
   const clearInput = () => {
     setWordEntered("");
   };
-
   const getTodosFiltered = () => {
     if (currentTab === ALL_TODOS) {
       return newFilter;
@@ -53,26 +54,35 @@ function SearchBar({ placeholder }) {
   };
   const getTodos = () => {
     if (currentTab === ALL_TODOS) {
-      return todos;
+      return selectedTodos;
     } else if (currentTab === ACTIVE_TODOS) {
-      return todos.filter((todo) => !todo.done);
+      return selectedTodos.filter((todo) => !todo.done);
     } else if (currentTab === DONE_TODOS) {
-      return todos.filter((todo) => todo.done);
+      return selectedTodos.filter((todo) => todo.done);
     }
   };
 
   const getFilteredData = () => {
     return getTodosFiltered().map((todo) => (
-      <Todo key={todo._id} todo={todo} />
+      <Todo
+        key={todo._id}
+        todo={todo}
+        handleSetSelecTodo={handleSetSelecTodo}
+        selectedTodos={selectedTodos}
+      />
     ));
   };
-  const getAllData = () => {
-    return (
-      // {console.log("all printed")
-      getTodos().map((todo) => <Todo key={todo._id} todo={todo} />)
-    );
-  };
 
+  const getAllData = () => {
+    return getTodos().map((todo) => (
+      <Todo
+        key={todo._id}
+        todo={todo}
+        handleSetSelecTodo={handleSetSelecTodo}
+        selectedTodos={selectedTodos}
+      />
+    ));
+  };
   // const removeDoneTodos = () => {
   //   todos.forEach(({ done, _id }) => {
   //     if (done) {
@@ -80,7 +90,10 @@ function SearchBar({ placeholder }) {
   //     }
   //   });
   // };
+  // useEffect(() => {
+  //   // dispatch(getAllTodos());
 
+  // }, [setAllTodos, getTodos]);
   return (
     <div>
       <div className="search">
@@ -99,6 +112,7 @@ function SearchBar({ placeholder }) {
             )}
           </div>
         </div>
+
         {/* {wordEntered === "" ? " " : ""} */}
         {/* <div className="dataResult" hidden={wordEntered === "" ? "hidden" : ""}>
           <ul>
@@ -112,7 +126,10 @@ function SearchBar({ placeholder }) {
           </ul>
         </div> */}
       </div>
+      {console.log("======", selectedTodos)}
+
       <div>{wordEntered.length === 0 ? getAllData() : getFilteredData()}</div>
+      {/* <div>{wordEntered.length === 0 ? getAllData() : getFilteredData()}</div> */}
     </div>
   );
 }

@@ -1,16 +1,23 @@
 import { useState } from "react";
 
-import { toggleChecked, toggleTodo, updateTodo } from "../redux/actions";
+import { toggleTodo, updateTodo } from "../redux/actions";
 import { deleteTodo } from "../redux/actions";
 
 import { useDispatch } from "react-redux";
 
-const Todo = ({ todo, checked }) => {
+const Todo = ({ todo, handleSetSelecTodo, selectedTodos }) => {
+  console.log("handleSetSelecTodo", handleSetSelecTodo);
   const [editing, setEditing] = useState(false);
   const [text, setText] = useState(todo?.data);
 
-  const dispatch = useDispatch();
+  // const [selectedTodos, setSelectedTodos] = useState([]);
 
+  const dispatch = useDispatch();
+  // useEffect(() => {
+  //   // dispatch(getAllTodos());
+  //   const newArr1 = todo.map((v) => ({ ...v, isSelected: false }));
+  //   setSelectedTodos(newArr1);
+  // }, [todo]);
   const editForm = () => {
     setEditing(true);
   };
@@ -25,9 +32,16 @@ const Todo = ({ todo, checked }) => {
   };
 
   const handleChecked = () => {
-    dispatch(toggleChecked(todo._id));
+    for (var i in selectedTodos) {
+      if (selectedTodos[i]._id == todo._id) {
+        selectedTodos[i].isSelected = !todo.isSelected;
+        break; //Stop this loop, we found it!
+      }
+    }
+    handleSetSelecTodo(selectedTodos);
   };
 
+  console.log("suyog", selectedTodos);
   return (
     // <div className="listComponent">
     <div className="listItems">
@@ -35,9 +49,10 @@ const Todo = ({ todo, checked }) => {
         type="checkbox"
         name="listCheckbox"
         className="checkBox"
-        // onChange={() => handleChecked()}
-        checked={todo.isChecked}
-        onClick={handleChecked}
+        checked={todo.isSelected}
+        key={todo._id}
+        onChange={(e) => handleChecked(e)}
+        // onClick={handleChecked()}
       />
       <li
         className="task"
