@@ -1,25 +1,21 @@
-import React, { useState } from "react";
-import "./SearchBar.css";
-
-import SearchIcon from "@mui/icons-material/Search";
-import CloseIcon from "@mui/icons-material/Close";
-
 import { ALL_TODOS, DONE_TODOS, ACTIVE_TODOS } from "../redux/actions/type";
 
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+
 import { searchTodos } from "../redux/actions/index";
-// import { getAllTodos } from "../redux/actions/index";
+
+import CloseIcon from "@mui/icons-material/Close";
+import SearchIcon from "@mui/icons-material/Search";
 
 import useDebounce from "./useDebaunce";
-
 import Todo from "./Todo";
+import "./SearchBar.css";
 
 function SearchBar({ placeholder, selectedTodos, handleChecked }) {
-  console.log("selectedTodos", selectedTodos);
   const dispatch = useDispatch();
-  const [wordEntered, setWordEntered] = useState("");
 
+  const [wordEntered, setWordEntered] = useState("");
   const currentTab = useSelector((state) => state.currentTab);
   const searchValue = useDebounce(wordEntered, 1000);
   const newFilter = useSelector((state) => state.searchWord);
@@ -36,15 +32,16 @@ function SearchBar({ placeholder, selectedTodos, handleChecked }) {
     setWordEntered("");
   };
 
-  // const getTodosFiltered = () => {
-  //   if (currentTab === ALL_TODOS) {
-  //     return newFilter;
-  //   } else if (currentTab === ACTIVE_TODOS) {
-  //     return newFilter.filter((todo) => !todo.done);
-  //   } else if (currentTab === DONE_TODOS) {
-  //     return newFilter.filter((todo) => todo.done);
-  //   }
-  // };
+  const getTodosFiltered = () => {
+    if (currentTab === ALL_TODOS) {
+      return newFilter;
+    } else if (currentTab === ACTIVE_TODOS) {
+      return newFilter.filter((todo) => !todo.done);
+    } else if (currentTab === DONE_TODOS) {
+      return newFilter.filter((todo) => todo.done);
+    }
+  };
+
   const getTodos = () => {
     if (currentTab === ALL_TODOS) {
       return selectedTodos;
@@ -56,7 +53,7 @@ function SearchBar({ placeholder, selectedTodos, handleChecked }) {
   };
 
   const getFilteredData = () => {
-    return selectedTodos.map((todo) => (
+    return getTodosFiltered().map((todo) => (
       <Todo key={todo._id} todo={todo} handleChecked={handleChecked} />
     ));
   };
@@ -66,17 +63,7 @@ function SearchBar({ placeholder, selectedTodos, handleChecked }) {
       <Todo key={todo._id} todo={todo} handleChecked={handleChecked} />
     ));
   };
-  // const removeDoneTodos = () => {
-  //   todos.forEach(({ done, _id }) => {
-  //     if (done) {
-  //       dispatch(deleteTodo(_id));
-  //     }
-  //   });
-  // };
-  // useEffect(() => {
-  //   // dispatch(getAllTodos());
 
-  // }, [setAllTodos, getTodos]);
   return (
     <div>
       <div className="search">
@@ -95,23 +82,8 @@ function SearchBar({ placeholder, selectedTodos, handleChecked }) {
             )}
           </div>
         </div>
-
-        {/* {wordEntered === "" ? " " : ""} */}
-        {/* <div className="dataResult" hidden={wordEntered === "" ? "hidden" : ""}>
-          <ul>
-            {newFilter.map((item) => {
-              return (
-                <li className="dataItem">
-                  <p>{item}</p>
-                </li>
-              );
-            })}
-          </ul>
-        </div> */}
       </div>
-
       <div>{wordEntered.length === 0 ? getAllData() : getFilteredData()}</div>
-      {/* <div>{wordEntered.length === 0 ? getAllData() : getFilteredData()}</div> */}
     </div>
   );
 }

@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import SearchBar from "../components/searchbar";
 import { getAllTodos, deleteTodo } from "../redux/actions/index";
 
-// import Todo from "./Todo";
+import SearchBar from "../components/searchbar";
 import Tabs from "./Tabs";
 
 export const Todos = () => {
