@@ -9,30 +9,22 @@ import { ALL_TODOS, DONE_TODOS, ACTIVE_TODOS } from "../redux/actions/type";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { searchTodos } from "../redux/actions/index";
-import { getAllTodos } from "../redux/actions/index";
-// import { deleteTodo } from "../redux/actions/index";
+// import { getAllTodos } from "../redux/actions/index";
+
 import useDebounce from "./useDebaunce";
 
 import Todo from "./Todo";
-// import Tabs from "./Tabs";
-function SearchBar({ placeholder, selectedTodos, handleSetSelecTodo }) {
-  console.log("handleSetSelecTodo1", handleSetSelecTodo);
-  const dispatch = useDispatch();
-  //   .map(
-  //   ({ data }) => data
-  // );
-  // const [selectedTodos, setSelectedTodos] = useState([]);
-  const [wordEntered, setWordEntered] = useState("");
-  const [filteredTodos, setFilteredTodos] = useState([]);
-  const [allTodos, setAllTodos] = useState([]);
 
-  // const todos = useSelector((state) => state.todos);
+function SearchBar({ placeholder, selectedTodos, handleChecked }) {
+  console.log("selectedTodos", selectedTodos);
+  const dispatch = useDispatch();
+  const [wordEntered, setWordEntered] = useState("");
+
   const currentTab = useSelector((state) => state.currentTab);
   const searchValue = useDebounce(wordEntered, 1000);
   const newFilter = useSelector((state) => state.searchWord);
 
   useEffect(() => {
-    dispatch(getAllTodos());
     async function fetchData() {
       setWordEntered(searchValue);
       dispatch(searchTodos(searchValue));
@@ -43,15 +35,16 @@ function SearchBar({ placeholder, selectedTodos, handleSetSelecTodo }) {
   const clearInput = () => {
     setWordEntered("");
   };
-  const getTodosFiltered = () => {
-    if (currentTab === ALL_TODOS) {
-      return newFilter;
-    } else if (currentTab === ACTIVE_TODOS) {
-      return newFilter.filter((todo) => !todo.done);
-    } else if (currentTab === DONE_TODOS) {
-      return newFilter.filter((todo) => todo.done);
-    }
-  };
+
+  // const getTodosFiltered = () => {
+  //   if (currentTab === ALL_TODOS) {
+  //     return newFilter;
+  //   } else if (currentTab === ACTIVE_TODOS) {
+  //     return newFilter.filter((todo) => !todo.done);
+  //   } else if (currentTab === DONE_TODOS) {
+  //     return newFilter.filter((todo) => todo.done);
+  //   }
+  // };
   const getTodos = () => {
     if (currentTab === ALL_TODOS) {
       return selectedTodos;
@@ -63,24 +56,14 @@ function SearchBar({ placeholder, selectedTodos, handleSetSelecTodo }) {
   };
 
   const getFilteredData = () => {
-    return getTodosFiltered().map((todo) => (
-      <Todo
-        key={todo._id}
-        todo={todo}
-        handleSetSelecTodo={handleSetSelecTodo}
-        selectedTodos={selectedTodos}
-      />
+    return selectedTodos.map((todo) => (
+      <Todo key={todo._id} todo={todo} handleChecked={handleChecked} />
     ));
   };
 
   const getAllData = () => {
     return getTodos().map((todo) => (
-      <Todo
-        key={todo._id}
-        todo={todo}
-        handleSetSelecTodo={handleSetSelecTodo}
-        selectedTodos={selectedTodos}
-      />
+      <Todo key={todo._id} todo={todo} handleChecked={handleChecked} />
     ));
   };
   // const removeDoneTodos = () => {
@@ -126,7 +109,6 @@ function SearchBar({ placeholder, selectedTodos, handleSetSelecTodo }) {
           </ul>
         </div> */}
       </div>
-      {console.log("======", selectedTodos)}
 
       <div>{wordEntered.length === 0 ? getAllData() : getFilteredData()}</div>
       {/* <div>{wordEntered.length === 0 ? getAllData() : getFilteredData()}</div> */}

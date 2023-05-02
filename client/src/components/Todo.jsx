@@ -1,23 +1,13 @@
 import { useState } from "react";
-
-import { toggleTodo, updateTodo } from "../redux/actions";
-import { deleteTodo } from "../redux/actions";
-
+import { toggleTodo, updateTodo, deleteTodo } from "../redux/actions";
 import { useDispatch } from "react-redux";
 
-const Todo = ({ todo, handleSetSelecTodo, selectedTodos }) => {
-  console.log("handleSetSelecTodo", handleSetSelecTodo);
+const Todo = ({ todo, handleChecked }) => {
   const [editing, setEditing] = useState(false);
   const [text, setText] = useState(todo?.data);
 
-  // const [selectedTodos, setSelectedTodos] = useState([]);
-
   const dispatch = useDispatch();
-  // useEffect(() => {
-  //   // dispatch(getAllTodos());
-  //   const newArr1 = todo.map((v) => ({ ...v, isSelected: false }));
-  //   setSelectedTodos(newArr1);
-  // }, [todo]);
+
   const editForm = () => {
     setEditing(true);
   };
@@ -31,19 +21,7 @@ const Todo = ({ todo, handleSetSelecTodo, selectedTodos }) => {
     dispatch(toggleTodo(todo._id));
   };
 
-  const handleChecked = () => {
-    for (var i in selectedTodos) {
-      if (selectedTodos[i]._id == todo._id) {
-        selectedTodos[i].isSelected = !todo.isSelected;
-        break; //Stop this loop, we found it!
-      }
-    }
-    handleSetSelecTodo(selectedTodos);
-  };
-
-  console.log("suyog", selectedTodos);
   return (
-    // <div className="listComponent">
     <div className="listItems">
       <input
         type="checkbox"
@@ -51,15 +29,12 @@ const Todo = ({ todo, handleSetSelecTodo, selectedTodos }) => {
         className="checkBox"
         checked={todo.isSelected}
         key={todo._id}
-        onChange={(e) => handleChecked(e)}
-        // onClick={handleChecked()}
+        onClick={(e) => handleChecked(todo)}
       />
       <li
         className="task"
-        key={todo._id}
+        key={todo?._id}
         style={{
-          // textDecoration: todo?.done ? "" : "line-through ",
-          // color: todo?.done ? "#bdc3c7" : "#34495e",
           backgroundColor: todo?.done ? "#f2ba00" : " ",
         }}
         data-testid="todo-test"
@@ -94,11 +69,7 @@ const Todo = ({ todo, handleSetSelecTodo, selectedTodos }) => {
         </span>
 
         {editing === false ? (
-          <span
-            className="icon"
-            onClick={editForm}
-            // onClick={() => setEditing((prevState) => !prevState)}
-          >
+          <span className="icon" onClick={editForm}>
             <i className="fas  fa-pen" />
           </span>
         ) : (
@@ -108,7 +79,6 @@ const Todo = ({ todo, handleSetSelecTodo, selectedTodos }) => {
         )}
       </li>
     </div>
-    // </div>
   );
 };
 
