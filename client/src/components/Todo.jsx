@@ -77,6 +77,7 @@ const Todo = ({ todo, handleChecked }) => {
             <i className="fas fa-check-square"></i>
           </span>
         )}
+        {/*  */}
       </li>
     </div>
   );
